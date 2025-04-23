@@ -47,7 +47,7 @@
   <h1>Checklist Webtool</h1>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('verkoop')">Verkoop</div>
+    <div class="tab" onclick="switchTab('verkoop')">Verkoop</div>
     <div class="tab" onclick="switchTab('tekenaar')">Tekenaar</div>
     <div class="tab" onclick="switchTab('werkplaats')">Werkplaats</div>
     <div class="tab" onclick="switchTab('montage')">Montage</div>
@@ -59,22 +59,20 @@
     <div class="subtab" onclick="switchSubTab('werktekening')">Werktekening</div>
   </div>
 
-   <!-- Subtabs voor werkplaats -->
+  <!-- Subtabs voor werkplaats -->
   <div id="subtabs-werkplaats" class="subtabs">
-    <div class="subtab" onclick="switchSubTab('voor controle')">Voor controle</div>
-    <div class="subtab" onclick="switchSubTab('na controle')">Na controle</div>
+    <div class="subtab" onclick="switchSubTab('voor-controle')">Voor controle</div>
+    <div class="subtab" onclick="switchSubTab('na-controle')">Na controle</div>
   </div>
-  
+
   <iframe id="iframe" src="verkoop/index.html"></iframe>
 
   <script>
-    let currentTab = 'verkoop'; // Huidige tab
+    let currentTab = 'verkoop';
 
-    // Mappen voor tabbladen
     const tabMap = {
-     'verkoop': 'verkoop/index.html',
-     'werkplaats': 'werkplaats/index.html',
-     'montage': 'montage/index.html'
+      'verkoop': 'verkoop/index.html',
+      'montage': 'montage/index.html'
     };
 
     const tekenaarSubtabMap = {
@@ -82,36 +80,55 @@
       'werktekening': 'tekenaar/werktekening.html'
     };
 
-    // Wissel van hoofdtab
+    const werkplaatsSubtabMap = {
+      'voor-controle': 'werkplaats/voor-controle.html',
+      'na-controle': 'werkplaats/na-controle.html'
+    };
+
     function switchTab(tab) {
       const iframe = document.getElementById("iframe");
       const tabs = document.querySelectorAll(".tab");
-      const subtabs = document.getElementById("subtabs-tekenaar");
+      const tekenaarSubtabs = document.getElementById("subtabs-tekenaar");
+      const werkplaatsSubtabs = document.getElementById("subtabs-werkplaats");
 
       tabs.forEach(t => t.classList.remove("active"));
       document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
 
+      // Reset en toon juiste subtabs
+      tekenaarSubtabs.classList.remove("show");
+      werkplaatsSubtabs.classList.remove("show");
+
       if (tab === 'tekenaar') {
-        subtabs.classList.add("show");
-        switchSubTab('klanttekening');  // standaard subtab
+        tekenaarSubtabs.classList.add("show");
+        switchSubTab('klanttekening');
+      } else if (tab === 'werkplaats') {
+        werkplaatsSubtabs.classList.add("show");
+        switchSubTab('voor-controle');
       } else {
-        subtabs.classList.remove("show");
         iframe.src = tabMap[tab];
       }
 
       currentTab = tab;
     }
 
-    // Wissel van subtab binnen "Tekenaar"
     function switchSubTab(subtab) {
       const iframe = document.getElementById("iframe");
       const subtabButtons = document.querySelectorAll(".subtab");
 
       subtabButtons.forEach(s => s.classList.remove("active"));
-      document.querySelector(`.subtab[onclick*="${subtab}"]`).classList.add("active");
+      document.querySelector(`.subtab[onclick*="${subtab}"]`)?.classList.add("active");
 
-      iframe.src = tekenaarSubtabMap[subtab];
+      if (currentTab === 'tekenaar') {
+        iframe.src = tekenaarSubtabMap[subtab];
+      } else if (currentTab === 'werkplaats') {
+        iframe.src = werkplaatsSubtabMap[subtab];
+      }
     }
+
+    // Laad standaard de verkoop tab bij starten
+    window.onload = function () {
+      switchTab('verkoop');
+    };
   </script>
 
 </body>
