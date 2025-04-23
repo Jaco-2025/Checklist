@@ -126,21 +126,27 @@
       currentTab = tab;
     }
 
-    function switchSubTab(subtab) {
-      const iframe = document.getElementById("iframe");
-      const subtabButtons = document.querySelectorAll(".subtab");
+ function switchSubTab(subtab) {
+  const iframe = document.getElementById("iframe");
+  const subtabButtons = document.querySelectorAll(".subtab");
 
-      subtabButtons.forEach(s => s.classList.remove("active"));
-      document.querySelector(`.subtab[onclick*="${subtab}"]`)?.classList.add("active");
+  subtabButtons.forEach(s => s.classList.remove("active"));
 
-      if (currentTab === 'tekenaar') {
-        iframe.src = tekenaarSubtabMap[subtab] || 'tekenaar/klanttekening.html';
-      } else if (currentTab === 'werkplaats') {
-        iframe.src = werkplaatsSubtabMap[subtab] || 'werkplaats/voor-controle.html';
-      } else if (currentTab === 'montage') {
-        iframe.src = montageSubtabMap[subtab] || 'montage/voor-controle.html';
-      }
-    }
+  let containerSelector = '';
+  if (currentTab === 'tekenaar') {
+    containerSelector = '#subtabs-tekenaar';
+    iframe.src = tekenaarSubtabMap[subtab] || 'tekenaar/klanttekening.html';
+  } else if (currentTab === 'werkplaats') {
+    containerSelector = '#subtabs-werkplaats';
+    iframe.src = werkplaatsSubtabMap[subtab] || 'werkplaats/voor-controle.html';
+  } else if (currentTab === 'montage') {
+    containerSelector = '#subtabs-montage';
+    iframe.src = montageSubtabMap[subtab] || 'montage/voor-controle.html';
+  }
+
+  // Active class alleen op knop binnen juiste container
+  document.querySelector(`${containerSelector} .subtab[onclick*="${subtab}"]`)?.classList.add("active");
+}
 
     // Tab initialiseren op basis van hash in de URL
     window.onload = function () {
