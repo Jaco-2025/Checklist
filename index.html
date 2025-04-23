@@ -14,17 +14,25 @@
     .tabs {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
-    .tab {
+    .tab, .subtab {
       padding: 10px 20px;
       background: #eee;
       border-radius: 6px;
       cursor: pointer;
     }
-    .tab.active {
+    .tab.active, .subtab.active {
       background: #007bff;
       color: white;
+    }
+    .subtabs {
+      display: none;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .subtabs.visible {
+      display: flex;
     }
     iframe {
       width: 100%;
@@ -45,25 +53,44 @@
     <div class="tab" onclick="switchTab('montage')">Montage</div>
   </div>
 
+  <div id="subtabs-tekenaar" class="subtabs">
+    <div class="subtab active" onclick="switchSubtab('klanttekening')">Klanttekening</div>
+    <div class="subtab" onclick="switchSubtab('werktekening')">Werktekening</div>
+  </div>
+
   <iframe id="iframe" src="verkoop.html"></iframe>
 
   <script>
     function switchTab(tab) {
       const iframe = document.getElementById("iframe");
       const tabs = document.querySelectorAll(".tab");
+      const subtabs = document.getElementById("subtabs-tekenaar");
 
       tabs.forEach(t => t.classList.remove("active"));
+      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
 
-      // Het juiste bestand laden voor het geselecteerde tabblad
+      if (tab === 'tekenaar') {
+        subtabs.classList.add("visible");
+        switchSubtab('klanttekening'); // standaard subtab
+      } else {
+        subtabs.classList.remove("visible");
+        iframe.src = tab + '.html';
+      }
+    }
+
+    function switchSubtab(subtab) {
+      const iframe = document.getElementById("iframe");
+      const subtabButtons = document.querySelectorAll(".subtab");
+
+      subtabButtons.forEach(btn => btn.classList.remove("active"));
+      document.querySelector(`.subtab[onclick*="${subtab}"]`).classList.add("active");
+
       const map = {
-        'verkoop': 'verkoop.html',
-        'tekenaar': 'tekenaar.html',
-        'werkplaats': 'werkplaats.html',
-        'montage': 'montage.html'
+        'klanttekening': 'klanttekening.html',
+        'werktekening': 'werktekening.html'
       };
 
-      iframe.src = map[tab];  // Verander de src van de iframe
-      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");  // Highlight de actieve tab
+      iframe.src = map[subtab];
     }
   </script>
 
