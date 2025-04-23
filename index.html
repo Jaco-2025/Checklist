@@ -64,43 +64,47 @@
   <script>
     let currentTab = 'verkoop'; // Huidige tab
 
-    // Functie voor het wisselen van hoofdtabs
+    // Mappen voor tabbladen
+    const tabMap = {
+      'verkoop': 'verkoop.html',
+      'werkplaats': 'werkplaats.html',
+      'montage': 'montage.html'
+    };
+
+    const tekenaarSubtabMap = {
+      'klanttekening': 'tekenaar/klanttekening.html',
+      'werktekening': 'tekenaar/werktekening.html'
+    };
+
+    // Wissel van hoofdtab
     function switchTab(tab) {
       const iframe = document.getElementById("iframe");
       const tabs = document.querySelectorAll(".tab");
       const subtabs = document.getElementById("subtabs-tekenaar");
 
-      // Verwijder de actieve klasse van alle hoofdtabs
       tabs.forEach(t => t.classList.remove("active"));
-
-      // Voeg de actieve klasse toe aan de geselecteerde hoofdtab
       document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
 
-      // Als we "Tekenaar" hebben gekozen, tonen we de subtabs
       if (tab === 'tekenaar') {
         subtabs.classList.add("show");
-        switchSubTab('klanttekening');  // Laad standaard klanttekening bij het openen van "Tekenaar"
+        switchSubTab('klanttekening');  // standaard subtab
       } else {
         subtabs.classList.remove("show");
-        iframe.src = `${tab}.html`; // Laad het juiste tabblad
+        iframe.src = tabMap[tab];
       }
 
-      currentTab = tab;  // Werk de huidige tab bij
+      currentTab = tab;
     }
 
-    // Functie voor het wisselen van subtabbladen binnen "Tekenaar"
+    // Wissel van subtab binnen "Tekenaar"
     function switchSubTab(subtab) {
       const iframe = document.getElementById("iframe");
       const subtabButtons = document.querySelectorAll(".subtab");
 
-      // Verwijder de actieve klasse van alle subtabbladen
       subtabButtons.forEach(s => s.classList.remove("active"));
-
-      // Voeg de actieve klasse toe aan het geselecteerde subtabblad
       document.querySelector(`.subtab[onclick*="${subtab}"]`).classList.add("active");
 
-      // Laad de juiste inhoud in de iframe voor de subtab
-      iframe.src = `tekenaar/${subtab}.html`;
+      iframe.src = tekenaarSubtabMap[subtab];
     }
   </script>
 
