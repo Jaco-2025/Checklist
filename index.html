@@ -45,7 +45,7 @@
     <div class="tab" onclick="switchTab('montage')">Montage</div>
   </div>
 
-  <iframe id="iframe" src="verkoop/index.html"></iframe>
+  <iframe id="iframe" src="verkoop.html"></iframe>
 
   <script>
     function switchTab(tab) {
@@ -55,12 +55,11 @@
       tabs.forEach(t => t.classList.remove("active"));
 
       const map = {
-       'verkoop': 'verkoop/index.html',
-       'tekenaar': 'tekenaar/index.html',
-       'werkplaats': 'werkplaats/index.html',
-       'montage': 'montage/index.html'
-     };
-
+        'verkoop': 'verkoop.html',
+        'tekenaar': 'tekenaar.html',
+        'werkplaats': 'werkplaats.html',
+        'montage': 'montage.html'
+      };
 
       iframe.src = map[tab];
       document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
