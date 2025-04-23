@@ -2,30 +2,33 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Tekenaar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Webtool</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      max-width: 1000px;
+      margin: auto;
     }
-    .subtabs {
+    .tabs {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
     }
-    .subtab {
-      padding: 8px 16px;
-      background: #ddd;
+    .tab {
+      padding: 10px 20px;
+      background: #eee;
       border-radius: 6px;
       cursor: pointer;
     }
-    .subtab.active {
-      background: #28a745;
+    .tab.active {
+      background: #007bff;
       color: white;
     }
     iframe {
       width: 100%;
-      height: 750px;
+      height: 800px;
       border: 1px solid #ccc;
       border-radius: 8px;
     }
@@ -33,29 +36,34 @@
 </head>
 <body>
 
-  <h2>Tekenaar</h2>
+  <h1>Checklist Webtool</h1>
 
-  <div class="subtabs">
-    <div class="subtab active" onclick="switchSubtab('klanttekening')">Klanttekening</div>
-    <div class="subtab" onclick="switchSubtab('werktekening')">Werktekening</div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('verkoop')">Verkoop</div>
+    <div class="tab" onclick="switchTab('tekenaar')">Tekenaar</div>
+    <div class="tab" onclick="switchTab('werkplaats')">Werkplaats</div>
+    <div class="tab" onclick="switchTab('montage')">Montage</div>
   </div>
 
-  <iframe id="subframe" src="klanttekening.html"></iframe>
+  <iframe id="iframe" src="verkoop.html"></iframe>
 
   <script>
-    function switchSubtab(tab) {
-      const iframe = document.getElementById("subframe");
-      const subtabs = document.querySelectorAll(".subtab");
+    function switchTab(tab) {
+      const iframe = document.getElementById("iframe");
+      const tabs = document.querySelectorAll(".tab");
 
-      subtabs.forEach(t => t.classList.remove("active"));
+      tabs.forEach(t => t.classList.remove("active"));
 
+      // Het juiste bestand laden voor het geselecteerde tabblad
       const map = {
-        'klanttekening': 'klanttekening.html',
-        'werktekening': 'werktekening.html'
+        'verkoop': 'verkoop.html',
+        'tekenaar': 'tekenaar.html',
+        'werkplaats': 'werkplaats.html',
+        'montage': 'montage.html'
       };
 
-      iframe.src = map[tab];
-      document.querySelector(`.subtab[onclick*="${tab}"]`).classList.add("active");
+      iframe.src = map[tab];  // Verander de src van de iframe
+      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");  // Highlight de actieve tab
     }
   </script>
 
