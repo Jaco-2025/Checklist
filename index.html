@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checklist Webtool</title>
   <style>
     body {
@@ -11,18 +11,18 @@
       max-width: 1000px;
       margin: auto;
     }
-    .tabs {
+    .tabs, .subtabs {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
     }
-    .tab {
+    .tab, .subtab {
       padding: 10px 20px;
       background: #eee;
-      cursor: pointer;
       border-radius: 6px;
+      cursor: pointer;
     }
-    .tab.active {
+    .tab.active, .subtab.active {
       background: #007bff;
       color: white;
     }
@@ -32,12 +32,19 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+    .subtabs {
+      display: none;
+    }
+    .subtabs.visible {
+      display: flex;
+    }
   </style>
 </head>
 <body>
 
   <h1>Checklist Webtool</h1>
 
+  <!-- Hoofdtabs -->
   <div class="tabs">
     <div class="tab active" onclick="switchTab('verkoop')">Verkoop</div>
     <div class="tab" onclick="switchTab('tekenaar')">Tekenaar</div>
@@ -45,25 +52,60 @@
     <div class="tab" onclick="switchTab('montage')">Montage</div>
   </div>
 
-  <iframe id="iframe" src="verkoop/index.html"></iframe>
+  <!-- Subtabs voor tekenaar -->
+  <div id="subtabs-tekenaar" class="subtabs">
+    <div class="subtab" onclick="switchSubTab('klanttekening')">Klanttekening</div>
+    <div class="subtab" onclick="switchSubTab('werktekening')">Werktekening</div>
+  </div>
+
+  <!-- Iframe -->
+  <iframe id="iframe" src="verkoop.html"></iframe>
 
   <script>
     function switchTab(tab) {
       const iframe = document.getElementById("iframe");
       const tabs = document.querySelectorAll(".tab");
+      const subtabs = document.getElementById("subtabs-tekenaar");
+      const subtabButtons = subtabs.querySelectorAll(".subtab");
 
       tabs.forEach(t => t.classList.remove("active"));
+      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
+
+      if (tab === 'tekenaar') {
+        subtabs.classList.add("visible");
+        switchSubTab('klanttekening'); // standaard subtab
+      } else {
+        subtabs.classList.remove("visible");
+        subtabButtons.forEach(st => st.classList.remove("active"));
+        iframe.src = `${tab}.html`;
+      }
+    }
+
+    function switchSubTab(subtab) {
+      const iframe = document.getElementById("iframe");
+      const subtabButtons = document.querySelectorAll(".subtab");
+
+      subtabButtons.forEach(t => t.classList.remove("active"));
+      document.querySelector(`.subtab[onclick*="${subtab}"]`).classList.add("active");
 
       const map = {
-        'verkoop': 'verkoop/index.html',
-        'tekenaar': 'tekenaar/index.html',
-        'werkplaats': 'werkplaats/index.html',
-        'montage': 'montage/index.html'
+        'klanttekening': 'klanttekening.html',
+        'werktekening': 'werktekening.html'
       };
 
-      iframe.src = map[tab];
-      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
+      iframe.src = map[subtab];
     }
+
+    // Hash ondersteuning
+    window.onload = function () {
+      const hash = window.location.hash.replace('#', '') || 'verkoop';
+      if (hash === 'klanttekening' || hash === 'werktekening') {
+        switchTab('tekenaar');
+        switchSubTab(hash);
+      } else {
+        switchTab(hash);
+      }
+    };
   </script>
 
 </body>
