@@ -170,7 +170,7 @@ function downloadPDF() {
 
   doc.save('checklist_werktekeningen.pdf');
 }
-
+    
     function resetChecklist() {
       document.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
       document.getElementById('order').value = '';
