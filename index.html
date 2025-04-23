@@ -65,6 +65,12 @@
     <div class="subtab" onclick="switchSubTab('na-controle')">Na controle</div>
   </div>
 
+  <!-- Subtabs voor montage -->
+  <div id="subtabs-montage" class="subtabs">
+    <div class="subtab" onclick="switchSubTab('voor-controle')">Voor controle</div>
+    <div class="subtab" onclick="switchSubTab('na-controle')">Na controle</div>
+  </div>
+  
   <iframe id="iframe" src="verkoop/index.html"></iframe>
 
   <script>
@@ -72,7 +78,6 @@
 
     const tabMap = {
       'verkoop': 'verkoop/index.html',
-      'montage': 'montage/index.html'
     };
 
     const tekenaarSubtabMap = {
@@ -85,18 +90,25 @@
       'na-controle': 'werkplaats/na-controle.html'
     };
 
+    const montageSubtabMap = {
+      'voor-controle': 'montage/voor-controle.html',
+      'na-controle': 'montage/na-controle.html'
+    };
+    
     function switchTab(tab) {
       const iframe = document.getElementById("iframe");
       const tabs = document.querySelectorAll(".tab");
       const tekenaarSubtabs = document.getElementById("subtabs-tekenaar");
       const werkplaatsSubtabs = document.getElementById("subtabs-werkplaats");
-
+      const montageSubtabs = document.getElementById("subtabs-montage");
+      
       tabs.forEach(t => t.classList.remove("active"));
       document.querySelector(`.tab[onclick*="${tab}"]`)?.classList.add("active");
 
       // Reset en toon juiste subtabs
       tekenaarSubtabs.classList.remove("show");
       werkplaatsSubtabs.classList.remove("show");
+      montageSubtabs.classList.remove("show");
 
       if (tab === 'tekenaar') {
         tekenaarSubtabs.classList.add("show");
@@ -104,6 +116,9 @@
       } else if (tab === 'werkplaats') {
         werkplaatsSubtabs.classList.add("show");
         switchSubTab('voor-controle');
+       } else if (tab === 'montage') {
+        montageSubtabs.classList.add("show");
+        switchSubTab('voor-controle');  
       } else {
         iframe.src = tabMap[tab] || 'verkoop/index.html';
       }
@@ -122,6 +137,8 @@
         iframe.src = tekenaarSubtabMap[subtab] || 'tekenaar/klanttekening.html';
       } else if (currentTab === 'werkplaats') {
         iframe.src = werkplaatsSubtabMap[subtab] || 'werkplaats/voor-controle.html';
+      } else if (currentTab === 'montage') {
+        iframe.src = montageSubtabMap[subtab] || 'montage/voor-controle.html';
       }
     }
 
