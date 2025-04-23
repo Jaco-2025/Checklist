@@ -92,7 +92,7 @@
       const werkplaatsSubtabs = document.getElementById("subtabs-werkplaats");
 
       tabs.forEach(t => t.classList.remove("active"));
-      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
+      document.querySelector(`.tab[onclick*="${tab}"]`)?.classList.add("active");
 
       // Reset en toon juiste subtabs
       tekenaarSubtabs.classList.remove("show");
@@ -105,7 +105,7 @@
         werkplaatsSubtabs.classList.add("show");
         switchSubTab('voor-controle');
       } else {
-        iframe.src = tabMap[tab];
+        iframe.src = tabMap[tab] || 'verkoop/index.html';
       }
 
       currentTab = tab;
@@ -119,15 +119,21 @@
       document.querySelector(`.subtab[onclick*="${subtab}"]`)?.classList.add("active");
 
       if (currentTab === 'tekenaar') {
-        iframe.src = tekenaarSubtabMap[subtab];
+        iframe.src = tekenaarSubtabMap[subtab] || 'tekenaar/klanttekening.html';
       } else if (currentTab === 'werkplaats') {
-        iframe.src = werkplaatsSubtabMap[subtab];
+        iframe.src = werkplaatsSubtabMap[subtab] || 'werkplaats/voor-controle.html';
       }
     }
 
-    // Laad standaard de verkoop tab bij starten
+    // Tab initialiseren op basis van hash in de URL
     window.onload = function () {
-      switchTab('verkoop');
+      const hash = window.location.hash.replace('#', '');
+
+      if (['verkoop', 'tekenaar', 'werkplaats', 'montage'].includes(hash)) {
+        switchTab(hash);
+      } else {
+        switchTab('verkoop');
+      }
     };
   </script>
 
