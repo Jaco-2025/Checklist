@@ -82,7 +82,7 @@
         switchSubTab('klanttekening');  // Laad standaard klanttekening bij het openen van "Tekenaar"
       } else {
         subtabs.classList.remove("show");
-        iframe.src = `${tab}/index.html`; // Voor andere tabs gewoon de juiste pagina laden
+        iframe.src = `${tab}/index.html`; // Laad het juiste tabblad
       }
 
       currentTab = tab;  // Werk de huidige tab bij
@@ -99,7 +99,7 @@
       // Voeg de actieve klasse toe aan het geselecteerde subtabblad
       document.querySelector(`.subtab[onclick*="${subtab}"]`).classList.add("active");
 
-      // Laad de juiste inhoud in de iframe
+      // Laad de juiste inhoud in de iframe voor de subtab
       iframe.src = `tekenaar/${subtab}.html`;
     }
   </script>
