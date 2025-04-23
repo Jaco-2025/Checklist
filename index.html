@@ -55,11 +55,12 @@
       tabs.forEach(t => t.classList.remove("active"));
 
       const map = {
-        'verkoop': 'verkoop/index.html',
-        'tekenaar': 'tekenaar/index.html',
-        'werkplaats': 'werkplaats/index.html',
-        'montage': 'montage/index.html'
-      };
+       'verkoop': 'verkoop/index.html',
+       'tekenaar': 'tekenaar/index.html',
+       'werkplaats': 'werkplaats/index.html',
+       'montage': 'montage/index.html'
+     };
+
 
       iframe.src = map[tab];
       document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
