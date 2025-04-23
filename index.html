@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checklist Webtool</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       padding: 20px;
       max-width: 1000px;
       margin: auto;
@@ -18,9 +18,9 @@
     }
     .tab {
       padding: 10px 20px;
-      background: #eee;
-      border-radius: 6px;
       cursor: pointer;
+      border-radius: 6px;
+      background: #eee;
     }
     .tab.active {
       background: #007bff;
@@ -37,35 +37,28 @@
 <body>
 
   <h1>Checklist Webtool</h1>
-
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('verkoop')">Verkoop</div>
-    <div class="tab" onclick="switchTab('tekenaar')">Tekenaar</div>
-    <div class="tab" onclick="switchTab('werkplaats')">Werkplaats</div>
-    <div class="tab" onclick="switchTab('montage')">Montage</div>
+    <div class="tab active" onclick="switchTab('klant')">Checklist Klant Verkoop</div>
+    <div class="tab" onclick="switchTab('werk')">Checklist Werk</div>
   </div>
 
-  <iframe id="iframe" src="verkoop.html"></iframe>
+  <iframe id="iframe" src="https://jaco-dr.github.io/cheklist-klant-verkoop/"></iframe>
 
   <script>
     function switchTab(tab) {
-      const iframe = document.getElementById("iframe");
-      const tabs = document.querySelectorAll(".tab");
+      const iframe = document.getElementById('iframe');
+      const tabs = document.querySelectorAll('.tab');
 
-      tabs.forEach(t => t.classList.remove("active"));
+      tabs.forEach(t => t.classList.remove('active'));
 
-      // Het juiste bestand laden voor het geselecteerde tabblad
-      const map = {
-        'verkoop': 'verkoop.html',
-        'tekenaar': 'tekenaar.html',
-        'werkplaats': 'werkplaats.html',
-        'montage': 'montage.html'
-      };
-
-      iframe.src = map[tab];  // Verander de src van de iframe
-      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");  // Highlight de actieve tab
+      if (tab === 'klant') {
+        iframe.src = 'https://jaco-dr.github.io/cheklist-klant-verkoop/';
+        tabs[0].classList.add('active');
+      } else {
+        iframe.src = 'https://jaco-dr.github.io/Chelist-werk/';
+        tabs[1].classList.add('active');
+      }
     }
   </script>
-
 </body>
 </html>
