@@ -54,16 +54,15 @@
 
       tabs.forEach(t => t.classList.remove("active"));
 
-      // Het juiste bestand laden voor het geselecteerde tabblad
       const map = {
         'verkoop': 'verkoop.html',
-        'tekenaar': 'tekenaar.html',
+        'tekenaar': 'tekenaar/index.html',
         'werkplaats': 'werkplaats.html',
         'montage': 'montage.html'
       };
 
-      iframe.src = map[tab];  // Verander de src van de iframe
-      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");  // Highlight de actieve tab
+      iframe.src = map[tab];
+      document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
     }
   </script>
 
