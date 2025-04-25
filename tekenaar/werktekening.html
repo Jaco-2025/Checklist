@@ -55,6 +55,8 @@
   <h1>Checklist Werktekeningen</h1>
 
   <div class="input-group">
+    <label for="datun">Datum:</label>
+    <input type="text" id="datum" placeholder=">
     <label for="order">Ordernummer:</label>
     <input type="text" id="order" placeholder="Bijv. 12345">
     <label for="klant">Klantnaam:</label>
@@ -194,7 +196,7 @@ function resetChecklist() {
   checkboxes.forEach(cb => cb.checked = false);
 
   // Alle tekstvelden leegmaken
-  const velden = ['order', 'klant', 'tekenaar', 'opmerkingen'];
+  const velden = ['order', 'klant', 'tekenaar', 'opmerkingen', 'datum'];
   velden.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
