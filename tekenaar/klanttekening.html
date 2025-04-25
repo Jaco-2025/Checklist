@@ -109,40 +109,53 @@
   <script>
     window.jsPDF = window.jspdf.jsPDF;
 
-    function downloadPDF() {
+ function downloadPDF() {
   const doc = new jsPDF();
   let y = 10;
+
   const order = document.getElementById('order').value;
   const klant = document.getElementById('klant').value;
-  const opmerkingen = document.getElementById('opmerkingen').value; // <-- deze regel is cruciaal
+  const opmerkingen = document.getElementById('opmerkingen').value;
 
   doc.setFontSize(14);
   doc.text("Checklist Werktekeningen", 10, y);
   y += 10;
 
-  if (order || klant) {
-    doc.setFontSize(12);
-    if (order) doc.text(`Ordernummer: ${order}`, 10, y);
-    if (klant) doc.text(`Klantnaam: ${klant}`, 10, y + (order ? 7 : 0));
-    y += (order && klant) ? 14 : 7;
+  doc.setFontSize(12);
+  if (order) {
+    doc.text(`Ordernummer: ${order}`, 10, y);
+    y += 7;
+  }
+  if (klant) {
+    doc.text(`Klantnaam: ${klant}`, 10, y);
+    y += 7;
   }
 
+  // Checklist-secties verwerken
   document.querySelectorAll('.section').forEach(section => {
-    const title = section.querySelector('h2').textContent;
-    if (title === 'Opmerkingen') return; // skip textarea
+    const titleEl = section.querySelector('h2');
+    if (!titleEl) return;
+
+    const title = titleEl.textContent;
+    if (title === 'Opmerkingen') return; // skip tekstveld
+
     doc.setFontSize(12);
     doc.text(title, 10, y);
     y += 7;
 
     section.querySelectorAll('label').forEach(label => {
-      const checkbox = label.querySelector('input');
-      const text = checkbox.checked ? '[x] ' : '[ ] ';
-      doc.text(text + label.textContent.trim(), 12, y);
-      y += 6;
+      const checkbox = label.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        const text = checkbox.checked ? '[x] ' : '[ ] ';
+        doc.text(text + label.textContent.trim(), 12, y);
+        y += 6;
+      }
     });
+
     y += 4;
   });
 
+  // Voeg opmerkingen toe
   if (opmerkingen.trim()) {
     doc.setFontSize(12);
     doc.text("Opmerkingen:", 10, y);
@@ -151,14 +164,16 @@
     doc.text(splitText, 12, y);
   }
 
-  doc.save('checklist_werktekeningen.pdf');
+  const bestandsnaam = order ? `${order}-checklist.pdf` : 'checklist.pdf';
+  doc.save(bestandsnaam);
 }
-    
-    function resetChecklist() {
-      document.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
-      document.getElementById('order').value = '';
-      document.getElementById('klant').value = '';
-    }
+
+function resetChecklist() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(cb => cb.checked = false);
+
+  document.getElementById("opmerkingen").value = ""; // Correct ID
+}
   </script>
 </body>
 </html>
