@@ -137,6 +137,8 @@ function downloadPDF() {
 
   const order = document.getElementById('order').value;
   const klant = document.getElementById('klant').value;
+  const tekenaar = document.getElementById('tekenaar').value;
+  const datum = document.getElementById('datum').value;
   const opmerkingen = document.getElementById('opmerkingen').value;
 
   doc.setFontSize(14);
@@ -152,6 +154,11 @@ function downloadPDF() {
     doc.text(`Klantnaam: ${klant}`, 10, y);
     y += 7;
   }
+  if (tekenaar) {
+    doc.text(`Tekenaar: ${tekenaar}`, 10, y);
+    y += 7;
+  }
+
 
   // Checklist-secties verwerken
   document.querySelectorAll('.section').forEach(section => {
