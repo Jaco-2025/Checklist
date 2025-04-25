@@ -189,10 +189,16 @@ function downloadPDF() {
 }
 
 function resetChecklist() {
+  // Alle vinkjes uitzetten
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(cb => cb.checked = false);
 
-  document.getElementById("opmerkingen").value = ""; // Correct ID
+  // Alle tekstvelden leegmaken
+  const velden = ['order', 'klant', 'tekenaar', 'opmerkingen'];
+  velden.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
 }
     
 </script>
