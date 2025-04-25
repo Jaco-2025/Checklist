@@ -59,6 +59,8 @@
     <input type="text" id="order" placeholder="Bijv. 12345">
     <label for="klant">Klantnaam:</label>
     <input type="text" id="klant" placeholder="Bijv. Jansen BV">
+    <label for="tekenaar">Tekenaar:</label>
+    <input type="text" id="tekenaar" placeholder="Jaco de Ruiter">
   </div>
 
   <div id="checklist">
@@ -130,20 +132,38 @@
 function downloadPDF() {
   const doc = new jsPDF();
   let y = 10;
+
   const order = document.getElementById('order').value;
   const klant = document.getElementById('klant').value;
-  const opmerkingen = document.getElementById('opmerkingen').value; // <-- deze regel is cruciaal
+  const opmerkingen = document.getElementById('opmerkingen').value;
 
   doc.setFontSize(14);
   doc.text("Checklist Werktekeningen", 10, y);
   y += 10;
 
-  if (order || klant) {
-    doc.setFontSize(12);
-    if (order) doc.text(`Ordernummer: ${order}`, 10, y);
-    if (klant) doc.text(`Klantnaam: ${klant}`, 10, y + (order ? 7 : 0));
-    y += (order && klant) ? 14 : 7;
+  doc.setFontSize(12);
+  if (order) {
+    doc.text(`Ordernummer: ${order}`, 10, y);
+    y += 7;
   }
+  if (klant) {
+    doc.text(`Klantnaam: ${klant}`, 10, y);
+    y += 7;
+  }
+
+  // Voeg opmerkingen toe
+  if (opmerkingen) {
+    doc.text("Opmerkingen:", 10, y);
+    y += 6;
+    const splitOpmerkingen = doc.splitTextToSize(opmerkingen, 180);
+    doc.text(splitOpmerkingen, 10, y);
+    y += splitOpmerkingen.length * 6;
+  }
+
+  // Stel bestandsnaam in: ordernummer-checklist.pdf
+  const bestandsnaam = (order ? `${order}-checklist.pdf` : "checklist.pdf");
+  doc.save(bestandsnaam);
+}
 
   document.querySelectorAll('.section').forEach(section => {
     const title = section.querySelector('h2').textContent;
