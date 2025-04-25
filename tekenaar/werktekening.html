@@ -173,10 +173,12 @@ function downloadPDF() {
 }
     
     function resetChecklist() {
-      document.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
-      document.getElementById('order').value = '';
-      document.getElementById('klant').value = '';
-    }
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(cb => cb.checked = false);
+
+  document.getElementById("opmerking").value = ""; // Opmerking leegmaken
+}
+    
 </script>
 
 </body>
