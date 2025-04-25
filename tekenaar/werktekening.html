@@ -137,14 +137,18 @@ function downloadPDF() {
 
   const order = document.getElementById('order').value;
   const klant = document.getElementById('klant').value;
-  const tekenaar = document.getElementById('tekenaar').value;
-  const datum = document.getElementById('datum').value;
+  const tekenaar = document.getElementById('tekenaar').value; // Tekenaar ophalen
   const opmerkingen = document.getElementById('opmerkingen').value;
+
+  // Huidige datum in DD-MM-YYYY formaat
+  const vandaag = new Date();
+  const datum = `${vandaag.getDate().toString().padStart(2, '0')}-${(vandaag.getMonth() + 1).toString().padStart(2, '0')}-${vandaag.getFullYear()}`;
 
   doc.setFontSize(14);
   doc.text("Checklist Werktekeningen", 10, y);
   y += 10;
 
+  // Voeg ordernummer, klantnaam, tekenaar en datum toe aan de PDF
   doc.setFontSize(12);
   if (order) {
     doc.text(`Ordernummer: ${order}`, 10, y);
@@ -158,7 +162,8 @@ function downloadPDF() {
     doc.text(`Tekenaar: ${tekenaar}`, 10, y);
     y += 7;
   }
-
+  doc.text(`Datum: ${datum}`, 10, y);
+  y += 10;
 
   // Checklist-secties verwerken
   document.querySelectorAll('.section').forEach(section => {
@@ -166,7 +171,7 @@ function downloadPDF() {
     if (!titleEl) return;
 
     const title = titleEl.textContent;
-    if (title === 'Opmerkingen') return; // skip tekstveld
+    if (title === 'Opmerkingen') return; // skip textarea
 
     doc.setFontSize(12);
     doc.text(title, 10, y);
@@ -193,7 +198,8 @@ function downloadPDF() {
     doc.text(splitText, 12, y);
   }
 
-  const bestandsnaam = order ? `${order.toLowerCase()}-checklist-werk.pdf` : 'checklist-werk.pdf';
+  // Bestandsnaam met ordernummer en datum
+  const bestandsnaam = order ? `${order}-checklist-werk-${datum}.pdf` : `checklist-werk-${datum}.pdf`;
   doc.save(bestandsnaam);
 }
 
