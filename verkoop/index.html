@@ -155,10 +155,17 @@
 }
     
     function resetChecklist() {
-      document.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
-      document.getElementById('order').value = '';
-      document.getElementById('klant').value = '';
-    }
+  // Alle vinkjes uitzetten
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(cb => cb.checked = false);
+
+  // Alle tekstvelden leegmaken
+  const velden = ['order', 'klant', 'tekenaar', 'opmerkingen'];
+  velden.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
   </script>
 </body>
 </html>
