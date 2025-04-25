@@ -184,7 +184,7 @@ function downloadPDF() {
     doc.text(splitText, 12, y);
   }
 
-  const bestandsnaam = order ? `${order}-checklist.pdf` : 'checklist.pdf';
+  const bestandsnaam = order ? `${order.toLowerCase()}-checklist-werk.pdf` : 'checklist-werk.pdf';
   doc.save(bestandsnaam);
 }
 
