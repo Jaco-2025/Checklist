@@ -151,36 +151,31 @@ function downloadPDF() {
     y += 7;
   }
 
-  // Voeg opmerkingen toe
-  if (opmerkingen) {
-    doc.text("Opmerkingen:", 10, y);
-    y += 6;
-    const splitOpmerkingen = doc.splitTextToSize(opmerkingen, 180);
-    doc.text(splitOpmerkingen, 10, y);
-    y += splitOpmerkingen.length * 6;
-  }
-
-  // Stel bestandsnaam in: ordernummer-checklist.pdf
-  const bestandsnaam = (order ? `${order}-checklist.pdf` : "checklist.pdf");
-  doc.save(bestandsnaam);
-}
-
+  // Checklist-secties verwerken
   document.querySelectorAll('.section').forEach(section => {
-    const title = section.querySelector('h2').textContent;
-    if (title === 'Opmerkingen') return; // skip textarea
+    const titleEl = section.querySelector('h2');
+    if (!titleEl) return;
+
+    const title = titleEl.textContent;
+    if (title === 'Opmerkingen') return; // skip tekstveld
+
     doc.setFontSize(12);
     doc.text(title, 10, y);
     y += 7;
 
     section.querySelectorAll('label').forEach(label => {
-      const checkbox = label.querySelector('input');
-      const text = checkbox.checked ? '[x] ' : '[ ] ';
-      doc.text(text + label.textContent.trim(), 12, y);
-      y += 6;
+      const checkbox = label.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        const text = checkbox.checked ? '[x] ' : '[ ] ';
+        doc.text(text + label.textContent.trim(), 12, y);
+        y += 6;
+      }
     });
+
     y += 4;
   });
 
+  // Voeg opmerkingen toe
   if (opmerkingen.trim()) {
     doc.setFontSize(12);
     doc.text("Opmerkingen:", 10, y);
@@ -189,14 +184,15 @@ function downloadPDF() {
     doc.text(splitText, 12, y);
   }
 
-  doc.save('checklist_werktekeningen.pdf');
+  const bestandsnaam = order ? `${order}-checklist.pdf` : 'checklist.pdf';
+  doc.save(bestandsnaam);
 }
-    
-    function resetChecklist() {
+
+function resetChecklist() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(cb => cb.checked = false);
 
-  document.getElementById("opmerking").value = ""; // Opmerking leegmaken
+  document.getElementById("opmerkingen").value = ""; // Correct ID
 }
     
 </script>
